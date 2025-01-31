@@ -53,7 +53,7 @@ export default function Page() {
         <LoadingPage />
       ) : (
         <div className="font-gofteh flex justify-center items-center flex-col mx-auto w-96 py-60">
-          <img src="./images/logo.png" className="w-52" alt="logo" />
+          <Image src="todo.amirbarfar.ir/images/logo.png" className="w-52" width={200} height={200} alt="logo" />
           <p className="text-center w-80">
             لیست کارهایی که قرار تو روز انجام بدی رو بنویس و برنامه ریزی کن تا راحت تر و سریع تر پیش بره کارهات :)
           </p>
