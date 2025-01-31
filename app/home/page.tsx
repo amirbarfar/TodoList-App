@@ -3,12 +3,12 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function page() {
+export default function Page() {
 
-  let router = useRouter()
+  const router = useRouter()
 
   // check token and login 
-  let token = localStorage.getItem("token")
+  const token = localStorage.getItem("token")
   if (!token) {
     router.push('/login')
   }
@@ -69,7 +69,12 @@ export default function page() {
 
   // get category 
 
-  let [data, setData] = useState([])
+  interface Category {
+    id  : number,
+    name : string
+  }
+
+  let [data, setData] = useState<Category[]>([])
 
   async function getCategory() {
     let response = await fetch('https://todo.zmat24.ir/api/category', {
@@ -122,7 +127,7 @@ export default function page() {
       <div className="flex justify-start items-center overflow-x-scroll gap-10 p-5 font-gofteh" style={{ scrollbarWidth: "thin" }}>
         {
           data.length ? (
-            data.map((item: any) =>
+            data.map((item) =>
               <div key={item.id} className="flex justify-center items-center flex-col bg-white shadow-lg h-36 min-w-36 rounded-lg">
                 {item.name}
               </div>

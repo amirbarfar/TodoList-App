@@ -4,9 +4,10 @@ import { RetroGrid } from '@/components/ui/retro-grid'
 import { useRouter } from "next/navigation";
 import React, { useState } from 'react'
 import LoadingPage from "@/components/Loader"
+import Image from 'next/image';
 
 
-export default function page() {
+export default function Page() {
   const [Loading, setLoading] = useState(false)
 
   const token = localStorage.getItem('token')
@@ -44,7 +45,7 @@ export default function page() {
       <RetroGrid />
       {Loading ? <LoadingPage /> :
         <div className="font-gofteh flex justify-center items-center flex-col mx-auto w-96 py-60">
-          <img src="./images/logo.png" className="w-52" alt="logo" />
+          <Image src="./images/logo.png" className="w-52" alt="logo" />
           <p className="text-center w-80">لیست کارهایی که قرار تو روز انجام بدی رو بنویس و برنامه ریزی کن تا راحت تر و سریع تر پیش بره کارهات :)</p>
           <button onClick={getUser} className="w-80 mt-10 h-10 flex justify-center items-center gap-2 rounded-md">
             <p className="text-black">بریم باهم شروع کنیم </p>
