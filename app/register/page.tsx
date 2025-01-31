@@ -16,9 +16,7 @@ function Page() {
     const router = useRouter();
 
     async function addUser(event: FormEvent<HTMLFormElement>) {
-
         event.preventDefault();
-
         const formData = new FormData(event.currentTarget);
 
         const data: DataType = {
@@ -41,13 +39,14 @@ function Page() {
             if (response.ok) {
                 const data = await response.json();
                 localStorage.setItem("token", data.token);
-                router.push('/');
+                localStorage.setItem("user" , data.user.name);
+                router.push('/home');
             } else {
                 throw new Error('خطا در ثبت نام');
             }
         } catch (error) {
             console.error('خطا:', error);
-            alert('مشکلی در ثبت نام پیش آمده. لطفا دوباره تلاش کنید.');
+            alert('شما یک بار با این ایمیل ثبت نام کرده اید !');
         }
     }
 
@@ -56,8 +55,7 @@ function Page() {
             <div>
                 <RetroGrid />
                 <div className="flex flex-col w-96 mx-auto">
-                    <img src="../images/logo.png" className="w-28 mx-8 my-3" alt="logo" />
-                    <div className="mx-auto my-20 flex justify-center items-center flex-col font-gofteh h-96">
+                    <div className="mx-auto my-44 flex justify-center items-center flex-col font-gofteh h-96">
                         <h1 className="text-xl">بیا ثبت نام کنیم !</h1>
                         <form onSubmit={addUser} className="grid gap-5 mt-10 border-black w-96 px-8">
                             <input name="username" className="border-2 h-12 p-3 rounded-lg bg-white" type="text" placeholder="نام و نام خانوادگی :" required />
