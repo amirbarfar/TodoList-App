@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import RetroGrid from './RetroGrid'; // فرض می‌کنیم این کامپوننت در پروژه شما وجود دارد
-import LoadingPage from './LoadingPage'; // فرض می‌کنیم این کامپوننت در پروژه شما وجود دارد
+import RetroGrid from '@/components/ui/retro-grid'; 
+import LoadingPage from '@/components/Loader'; 
 
 export default function Page() {
   const [loading, setLoading] = useState(false);
