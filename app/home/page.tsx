@@ -4,99 +4,114 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Page() {
+  const router = useRouter();
 
-  const router = useRouter()
+  // ذخیره‌ی مقدار توکن و نام کاربری
+  const [token, setToken] = useState<string | null>(null);
+  const [name, setName] = useState<string | null>(null);
+  
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    const storedName = localStorage.getItem("user");
 
-  // check token and login 
-  const token = localStorage.getItem("token")
-  if (!token) {
-    router.push('/login')
-  }
+    if (!storedToken) {
+      router.push('/login');
+    }
 
-  // name user
-  let name = localStorage.getItem('user')
+    setToken(storedToken);
+    setName(storedName);
+  }, []);
 
-  // newCategory
-  let [newCategory, setNewCategory] = useState(false)
+  // مدیریت باز و بسته شدن فرم دسته‌بندی جدید
+  const [newCategory, setNewCategory] = useState(false);
+  const [nameCategory, setNameCategory] = useState("");
 
-  let resCategory = () => {
-    setNewCategory((prev) => !prev)
-  }
+  const toggleCategoryForm = () => {
+    setNewCategory((prev) => !prev);
+  };
 
-  let [nameCategory, setNameCategory] = useState('')
-
-  // logout 
-
+  // خروج از حساب کاربری
   async function logOut() {
-    let response = await fetch("https://todo.zmat24.ir/api/logout", {
+    if (!token) return;
+
+    const response = await fetch("https://todo.zmat24.ir/api/logout", {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
         Provider: "OaMTBh1YMNO4kdlz9SCX6UjIIhpIfF",
-        "Authorization": `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       }
-    })
+    });
+
     if (response.ok) {
-      router.push("/login")
-      localStorage.removeItem("token")
+      localStorage.removeItem("token");
+      router.push("/login");
     } else {
-      console.log("خطایی وجود دارد :(");
+      console.error("خطایی وجود دارد :(");
     }
   }
 
-  // create category
+  // ایجاد دسته‌بندی جدید
+  async function createCategory(event: React.FormEvent) {
+    event.preventDefault();
+    if (!token) return;
 
-  async function createCategory(event: any) {
-    event.preventDefault()
-    let response = await fetch('https://todo.zmat24.ir/api/category/create', {
+    const response = await fetch('https://todo.zmat24.ir/api/category/create', {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
         Provider: "OaMTBh1YMNO4kdlz9SCX6UjIIhpIfF",
-        "Authorization": `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify({ "name": nameCategory })
-    })
+      body: JSON.stringify({ name: nameCategory })
+    });
 
     if (response.ok) {
-      setNewCategory(false)
+      setNewCategory(false);
+      getCategory();
     } else {
-      console.log("دیتا وجود ندارد :(");
+      console.error("دیتا وجود ندارد :(");
     }
   }
 
-  // get category 
-
+  // دریافت دسته‌بندی‌ها
   interface Category {
-    id  : number,
-    name : string
+    id: number;
+    name: string;
   }
 
-  let [data, setData] = useState<Category[]>([])
+  const [data, setData] = useState<Category[]>([]);
 
   async function getCategory() {
-    let response = await fetch('https://todo.zmat24.ir/api/category', {
+    if (!token) return;
+
+    const response = await fetch('https://todo.zmat24.ir/api/category', {
       method: "GET",
       headers: {
-        'Content-Type': "application/json",
+        "Content-Type": "application/json",
         Accept: "application/json",
         Provider: "OaMTBh1YMNO4kdlz9SCX6UjIIhpIfF",
         Authorization: `Bearer ${token}`
       }
-    })
+    });
+
     if (response.ok) {
-      let res = await response.json()
-      setData(res.categories)
+      const res = await response.json();
+      if (Array.isArray(res.categories)) {
+        setData(res.categories);
+      } else {
+        console.error("داده نامعتبر است:", res);
+      }
     } else {
-      console.log("خطایی داریم :(");
+      console.error("خطایی داریم :(");
     }
   }
+
   useEffect(() => {
     getCategory();
-  }, [data]);
-
+  }, [token]); // ✅ فقط هنگام دریافت توکن اجرا شود
 
   return (
     <div>
@@ -107,36 +122,44 @@ export default function Page() {
         </div>
         <button onClick={logOut} className="w-44 h-12 bg-red-600 text-white rounded-lg">خروج از حساب کاربری !</button>
       </div>
+
       <div className="p-4 font-gofteh">
         <div className="flex justify-start items-start gap-5 flex-col">
-          <h2 className="text-2xl">دسته بندی ها</h2>
-          <button onClick={resCategory} className="w-44 h-10 bg-blue-500 rounded-md text-white">
-            دسته بندی جدید
+          <h2 className="text-2xl">دسته‌بندی‌ها</h2>
+          <button onClick={toggleCategoryForm} className="w-44 h-10 bg-blue-500 rounded-md text-white">
+            دسته‌بندی جدید
           </button>
         </div>
 
-        <div className={`transition-all duration-300 ease-in-out ${newCategory ? "opacity-100 scale-100" : "opacity-0 scale-90"} justify-start py-5 items-center absolute flex flex-col w-80 h-60 text-black bg-[#ffffff] mt-10 rounded-lg shadow-2xl`}>
-          <h2 className="text-xl mb-8">ساخت دسته بندی جدید :)</h2>
-          <form action="" className="flex justify-center items-center flex-col w-full px-5">
-            <input onChange={(event) => setNameCategory(event.target.value)} type="text" className="w-full border-2 p-2 border-[#b6b6b6] h-12 rounded-md" required placeholder="چه دسته بندی میخوای ؟" />
-            <button onClick={createCategory} className="w-full bg-blue-500 rounded-md text-white h-12 mt-5">بریم که بسازیمش</button>
-          </form>
-        </div>
+        {newCategory && (
+          <div className="transition-all duration-300 ease-in-out opacity-100 scale-100 justify-start py-5 items-center absolute flex flex-col w-80 h-60 text-black bg-white mt-10 rounded-lg shadow-2xl">
+            <h2 className="text-xl mb-8">ساخت دسته‌بندی جدید :)</h2>
+            <form className="flex justify-center items-center flex-col w-full px-5" onSubmit={createCategory}>
+              <input 
+                type="text" 
+                className="w-full border-2 p-2 border-gray-400 h-12 rounded-md" 
+                required 
+                placeholder="چه دسته‌بندی میخوای ؟" 
+                value={nameCategory}
+                onChange={(event) => setNameCategory(event.target.value)}
+              />
+              <button type="submit" className="w-full bg-blue-500 rounded-md text-white h-12 mt-5">بریم که بسازیمش</button>
+            </form>
+          </div>
+        )}
       </div>
 
       <div className="flex justify-start items-center overflow-x-scroll gap-10 p-5 font-gofteh" style={{ scrollbarWidth: "thin" }}>
-        {
-          data.length ? (
-            data.map((item) =>
-              <div key={item.id} className="flex justify-center items-center flex-col bg-white shadow-lg h-36 min-w-36 rounded-lg">
-                {item.name}
-              </div>
-            )
-          ) : (
-            <p className="mx-auto font-gofteh text-xl ">دسته بندی وجود ندارد</p>
-          )
-        }
+        {data.length > 0 ? (
+          data.map((item) => (
+            <div key={item.id} className="flex justify-center items-center flex-col bg-white shadow-lg h-36 min-w-36 rounded-lg">
+              {item.name}
+            </div>
+          ))
+        ) : (
+          <p className="mx-auto font-gofteh text-xl">دسته‌بندی وجود ندارد</p>
+        )}
       </div>
     </div>
-  )
-} 
+  );
+}
