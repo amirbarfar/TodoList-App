@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 export default function Page() {
   const router = useRouter();
@@ -9,7 +9,7 @@ export default function Page() {
   // ذخیره‌ی مقدار توکن و نام کاربری
   const [token, setToken] = useState<string | null>(null);
   const [name, setName] = useState<string | null>(null);
-  
+
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     const storedName = localStorage.getItem("user");
@@ -20,7 +20,7 @@ export default function Page() {
 
     setToken(storedToken);
     setName(storedName);
-  }, []);
+  }, [router]); // اضافه کردن router به dependency
 
   // مدیریت باز و بسته شدن فرم دسته‌بندی جدید
   const [newCategory, setNewCategory] = useState(false);
@@ -31,7 +31,7 @@ export default function Page() {
   };
 
   // خروج از حساب کاربری
-  async function logOut() {
+  const logOut = async () => {
     if (!token) return;
 
     const response = await fetch("https://todo.zmat24.ir/api/logout", {
@@ -50,10 +50,10 @@ export default function Page() {
     } else {
       console.error("خطایی وجود دارد :(");
     }
-  }
+  };
 
   // ایجاد دسته‌بندی جدید
-  async function createCategory(event: React.FormEvent) {
+  const createCategory = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!token) return;
 
@@ -70,11 +70,11 @@ export default function Page() {
 
     if (response.ok) {
       setNewCategory(false);
-      getCategory();
+      getCategory(); // پس از ایجاد دسته‌بندی جدید، دوباره داده‌ها را دریافت می‌کنیم
     } else {
       console.error("دیتا وجود ندارد :(");
     }
-  }
+  };
 
   // دریافت دسته‌بندی‌ها
   interface Category {
@@ -84,7 +84,8 @@ export default function Page() {
 
   const [data, setData] = useState<Category[]>([]);
 
-  async function getCategory() {
+  // تابع دریافت دسته‌بندی‌ها
+  const getCategory = useCallback(async () => {
     if (!token) return;
 
     const response = await fetch('https://todo.zmat24.ir/api/category', {
@@ -107,11 +108,11 @@ export default function Page() {
     } else {
       console.error("خطایی داریم :(");
     }
-  }
+  }, [token]); // از useCallback برای جلوگیری از اجرای مکرر تابع استفاده شده است
 
   useEffect(() => {
     getCategory();
-  }, [token]); // ✅ فقط هنگام دریافت توکن اجرا شود
+  }, [getCategory]); // دریافت داده‌ها فقط زمانی که توکن تغییر می‌کند
 
   return (
     <div>
