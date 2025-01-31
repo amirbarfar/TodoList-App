@@ -2,15 +2,17 @@
 
 import { RetroGrid } from '@/components/ui/retro-grid'
 import { useRouter } from "next/navigation";
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import LoadingPage from "@/components/Loader"
 import Image from 'next/image';
 
 
 export default function Page() {
   const [Loading, setLoading] = useState(false)
-
-  const token = localStorage.getItem('token')
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+  }, [])
+  
   const router = useRouter()
 
   async function getUser() {
