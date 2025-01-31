@@ -9,8 +9,8 @@ import LoadingPage from "@/components/Loader"
 export default function page() {
   const [Loading, setLoading] = useState(false)
 
-  let token = localStorage.getItem('token')
-  let router = useRouter()
+  const token = localStorage.getItem('token')
+  const router = useRouter()
 
   async function getUser() {
     setLoading(true);

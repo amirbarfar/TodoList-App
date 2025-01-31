@@ -119,12 +119,16 @@ export default function page() {
         </div>
       </div>
 
-      <div className="flex justify-start items-center overflow-x-scroll gap-10 p-5 font-gofteh" style={{scrollbarWidth : "thin"}}>
+      <div className="flex justify-start items-center overflow-x-scroll gap-10 p-5 font-gofteh" style={{ scrollbarWidth: "thin" }}>
         {
-          data.map((item: any) =>
-            <div key={item.id} className="flex justify-center items-center flex-col bg-white shadow-lg h-36 min-w-36 rounded-lg">
-              {item.name}
-            </div>
+          data.length ? (
+            data.map((item: any) =>
+              <div key={item.id} className="flex justify-center items-center flex-col bg-white shadow-lg h-36 min-w-36 rounded-lg">
+                {item.name}
+              </div>
+            )
+          ) : (
+            <p className="mx-auto font-gofteh text-xl ">دسته بندی وجود ندارد</p>
           )
         }
       </div>
