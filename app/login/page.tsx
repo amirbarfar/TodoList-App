@@ -17,7 +17,7 @@ function Page() {
 
   async function addUser(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    let formData = new FormData(event.currentTarget);
+    const formData = new FormData(event.currentTarget);
 
     const data: DataType = {
       email: formData.get("email") as string,
@@ -36,7 +36,7 @@ function Page() {
       })
 
       if (response.ok) {
-        let data = await response.json()
+        const data = await response.json()
         localStorage.setItem("token" , data.token)
         router.push('/home');
       } else {

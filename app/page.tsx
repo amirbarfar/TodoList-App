@@ -26,8 +26,6 @@ export default function Page() {
         }
       })
 
-      let data = await response.json()
-
       if (response.ok) {
         setLoading(false);
         router.push('/home')
