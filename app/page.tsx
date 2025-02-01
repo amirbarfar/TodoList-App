@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import {RetroGrid} from '@/components/ui/retro-grid'; 
 import LoadingPage from '@/components/Loader'; 
@@ -9,10 +8,8 @@ import LoadingPage from '@/components/Loader';
 export default function Page() {
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState<string | null>(null);
-  const router = useRouter();
 
   useEffect(() => {
-    // فقط در محیط مرورگر localStorage را بخوانید
     if (typeof window !== 'undefined') {
       const storedToken = localStorage.getItem('token');
       setToken(storedToken);
@@ -20,7 +17,7 @@ export default function Page() {
   }, []);
 
   const getUser = async () => {
-    if (!token) return; // اگر توکن وجود ندارد، کاری انجام نده
+    if (!token) return; 
 
     setLoading(true);
     try {
