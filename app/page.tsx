@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import {RetroGrid} from '@/components/ui/retro-grid'; 
 import LoadingPage from '@/components/Loader';
