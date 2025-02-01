@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import {RetroGrid} from '@/components/ui/retro-grid'; 
 import LoadingPage from '@/components/Loader'; 
+import router from 'next/router';
 
 export default function Page() {
   const [loading, setLoading] = useState(false);
@@ -33,9 +34,9 @@ export default function Page() {
 
       if (response.ok) {
         setLoading(false);
-        window.location.href = '/home';
+        router.push('/home');
       } else {
-        window.location.href = '/login';
+        router.push('/login');
       }
     } catch (error) {
       setLoading(false);
