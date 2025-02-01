@@ -36,9 +36,9 @@ export default function Page() {
 
       if (response.ok) {
         setLoading(false);
-        router.push('/home');
+        window.location.href = '/home';
       } else {
-        router.push('/login');
+        window.location.href = '/login';
       }
     } catch (error) {
       setLoading(false);
