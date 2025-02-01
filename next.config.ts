@@ -1,9 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  distDir: "build", // تغییر مسیر خروجی به "build"
+  output: "export",
+  distDir: "build", 
+  trailingSlash: true,
   images: {
-    domains: ['todo.amirbarfar.ir'], // دامنه‌های معتبر برای بارگذاری تصاویر
+    unoptimized: true, 
+    domains: ["todo.amirbarfar.ir"], 
   },
 };
 
