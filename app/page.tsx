@@ -16,7 +16,7 @@ export default function Page() {
     }
   }, []);
 
-  const getUser = async () => {
+  async function getUser() {
     if (!token) return; 
 
     setLoading(true);
@@ -32,13 +32,10 @@ export default function Page() {
       });
 
       if (response.ok) {
-        if (typeof window !== 'undefined') {
-          window.location.href = '/home';
-        }
+        setLoading(false);
+        window.location.href = '/home';
       } else {
-        if (typeof window !== 'undefined') {
-          window.location.href = '/login';
-        }
+        window.location.href = '/login';
       }
     } catch (error) {
       setLoading(false);
