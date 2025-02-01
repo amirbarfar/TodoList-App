@@ -3,22 +3,15 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import {RetroGrid} from '@/components/ui/retro-grid'; 
-import LoadingPage from '@/components/Loader'; 
-import router from 'next/router';
+import LoadingPage from '@/components/Loader';
 
 export default function Page() {
+  
   const [loading, setLoading] = useState(false);
-  const [token, setToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const storedToken = localStorage.getItem('token');
-      setToken(storedToken);
-    }
-  }, []);
 
   async function getUser() {
-    if (!token) return; 
+
+    const token = localStorage.getItem('token');
 
     setLoading(true);
     try {
@@ -34,9 +27,9 @@ export default function Page() {
 
       if (response.ok) {
         setLoading(false);
-        router.push('/home');
+        window.location.href = '/home';
       } else {
-        router.push('/login');
+        window.location.href = '/login';
       }
     } catch (error) {
       setLoading(false);
