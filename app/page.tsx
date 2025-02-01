@@ -32,10 +32,13 @@ export default function Page() {
       });
 
       if (response.ok) {
-        setLoading(false);
-        window.location.href = '/home';
+        if (typeof window !== 'undefined') {
+          window.location.href = '/home';
+        }
       } else {
-        window.location.href = '/login';
+        if (typeof window !== 'undefined') {
+          window.location.href = '/login';
+        }
       }
     } catch (error) {
       setLoading(false);
