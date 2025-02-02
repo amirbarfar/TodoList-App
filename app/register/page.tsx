@@ -42,11 +42,11 @@ function Page() {
                 localStorage.setItem("user" , data.user.name);
                 router.push('/home');
             } else {
-                throw new Error('خطا در ثبت نام');
+                console.log(await response.json());
+                
             }
         } catch (error) {
             console.error('خطا:', error);
-            alert('شما یک بار با این ایمیل ثبت نام کرده اید !');
         }
     }
 

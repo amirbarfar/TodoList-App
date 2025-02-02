@@ -3,10 +3,10 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 
+
 export default function Page() {
   const router = useRouter();
 
-  // ذخیره‌ی مقدار توکن و نام کاربری
   const [token, setToken] = useState<string | null>(null);
   const [name, setName] = useState<string | null>(null);
 
@@ -20,9 +20,8 @@ export default function Page() {
 
     setToken(storedToken);
     setName(storedName);
-  }, [router]); // اضافه کردن router به dependency
+  }, [router]); 
 
-  // مدیریت باز و بسته شدن فرم دسته‌بندی جدید
   const [newCategory, setNewCategory] = useState(false);
   const [nameCategory, setNameCategory] = useState("");
 
@@ -30,7 +29,7 @@ export default function Page() {
     setNewCategory((prev) => !prev);
   };
 
-  // خروج از حساب کاربری
+
   const logOut = async () => {
     if (!token) return;
 
@@ -52,7 +51,6 @@ export default function Page() {
     }
   };
 
-  // ایجاد دسته‌بندی جدید
   const createCategory = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!token) return;
@@ -70,13 +68,12 @@ export default function Page() {
 
     if (response.ok) {
       setNewCategory(false);
-      getCategory(); // پس از ایجاد دسته‌بندی جدید، دوباره داده‌ها را دریافت می‌کنیم
+      getCategory();
     } else {
       console.error("دیتا وجود ندارد :(");
     }
   };
 
-  // دریافت دسته‌بندی‌ها
   interface Category {
     id: number;
     name: string;
@@ -84,7 +81,6 @@ export default function Page() {
 
   const [data, setData] = useState<Category[]>([]);
 
-  // تابع دریافت دسته‌بندی‌ها
   const getCategory = useCallback(async () => {
     if (!token) return;
 
@@ -108,11 +104,11 @@ export default function Page() {
     } else {
       console.error("خطایی داریم :(");
     }
-  }, [token]); // از useCallback برای جلوگیری از اجرای مکرر تابع استفاده شده است
+  }, [token]);
 
   useEffect(() => {
     getCategory();
-  }, [getCategory]); // دریافت داده‌ها فقط زمانی که توکن تغییر می‌کند
+  }, [getCategory]);
 
   return (
     <div>

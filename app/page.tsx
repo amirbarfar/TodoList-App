@@ -4,10 +4,12 @@ import { useState } from 'react';
 import Image from 'next/image';
 import {RetroGrid} from '@/components/ui/retro-grid'; 
 import LoadingPage from '@/components/Loader';
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   
   const [loading, setLoading] = useState(false);
+  const router = useRouter()
 
   async function getUser() {
 
@@ -27,9 +29,9 @@ export default function Page() {
 
       if (response.ok) {
         setLoading(false);
-        window.location.href = '/home';
+        router.push('/home')
       } else {
-        window.location.href = '/login';
+        router.push('/login')
       }
     } catch (error) {
       setLoading(false);
