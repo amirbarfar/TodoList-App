@@ -42,7 +42,7 @@ function Page() {
                 localStorage.setItem("user" , data.user.name);
                 router.push('/home');
             } else {
-                console.log(await response.json());
+                alert('شما قبلا با این ایمیل ثبت نام کرده اید.');
                 
             }
         } catch (error) {

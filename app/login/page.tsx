@@ -28,19 +28,23 @@ function Page() {
       const response = await fetch("https://todo.zmat24.ir/api/login", {
         method: "POST",
         headers: {
+          Provider: "OaMTBh1YMNO4kdlz9SCX6UjIIhpIfF",
           "Content-Type": "application/json",
-          Accept: "application/json",
-          Provider: "OaMTBh1YMNO4kdlz9SCX6UjIIhpIfF"
+          Accept: "application/json"
         },
         body: JSON.stringify(data)
       })
 
       if (response.ok) {
         const data = await response.json()
-        localStorage.setItem("token" , data.token)
-        router.push('/home');
+        if (data.token) {
+          localStorage.setItem("token", data.token)
+          router.push('/home');
+        }else{
+          alert("لطفا ابتدا ثبت نام کنید :)")
+        }
       } else {
-        throw new Error('خطا در ثبت نام');
+        console.log('خطا در ثبت نام');
       }
     } catch (error) {
       console.error('خطا:', error);

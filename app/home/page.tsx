@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
-
+import { RetroGrid } from "@/components/ui/retro-grid";
 
 export default function Page() {
   const router = useRouter();
@@ -20,7 +20,7 @@ export default function Page() {
 
     setToken(storedToken);
     setName(storedName);
-  }, [router]); 
+  }, [router]);
 
   const [newCategory, setNewCategory] = useState(false);
   const [nameCategory, setNameCategory] = useState("");
@@ -112,50 +112,53 @@ export default function Page() {
 
   return (
     <div>
-      <div className="flex justify-between p-4 items-start font-gofteh">
-        <div>
-          <h1 className="text-xl">خوش اومدی {name} عزیز !</h1>
-          <p className="text-sm">خب بریم به برنامه امروزمون برسیم :)</p>
-        </div>
-        <button onClick={logOut} className="w-44 h-12 bg-red-600 text-white rounded-lg">خروج از حساب کاربری !</button>
-      </div>
-
-      <div className="p-4 font-gofteh">
-        <div className="flex justify-start items-start gap-5 flex-col">
-          <h2 className="text-2xl">دسته‌بندی‌ها</h2>
-          <button onClick={toggleCategoryForm} className="w-44 h-10 bg-blue-500 rounded-md text-white">
-            دسته‌بندی جدید
-          </button>
-        </div>
-
-        {newCategory && (
-          <div className="transition-all duration-300 ease-in-out opacity-100 scale-100 justify-start py-5 items-center absolute flex flex-col w-80 h-60 text-black bg-white mt-10 rounded-lg shadow-2xl">
-            <h2 className="text-xl mb-8">ساخت دسته‌بندی جدید :)</h2>
-            <form className="flex justify-center items-center flex-col w-full px-5" onSubmit={createCategory}>
-              <input 
-                type="text" 
-                className="w-full border-2 p-2 border-gray-400 h-12 rounded-md" 
-                required 
-                placeholder="چه دسته‌بندی میخوای ؟" 
-                value={nameCategory}
-                onChange={(event) => setNameCategory(event.target.value)}
-              />
-              <button type="submit" className="w-full bg-blue-500 rounded-md text-white h-12 mt-5">بریم که بسازیمش</button>
-            </form>
+      <RetroGrid/>
+      <div className="w-[400px] mx-auto bg-white min-h-screen">
+        <div className="flex justify-between p-4 items-start font-gofteh">
+          <div>
+            <h1 className="text-lg">خوش اومدی {name} عزیز !</h1>
+            <p className="text-xs">خب بریم به برنامه امروزمون برسیم :)</p>
           </div>
-        )}
-      </div>
+          <button onClick={logOut} className="w-32 h-10 bg-red-600 text-sm text-white rounded-lg">خروج از حساب کاربری !</button>
+        </div>
 
-      <div className="flex justify-start items-center overflow-x-scroll gap-10 p-5 font-gofteh" style={{ scrollbarWidth: "thin" }}>
-        {data.length > 0 ? (
-          data.map((item) => (
-            <div key={item.id} className="flex justify-center items-center flex-col bg-white shadow-lg h-36 min-w-36 rounded-lg">
-              {item.name}
+        <div className="p-4 font-gofteh">
+          <div className="flex justify-start items-start gap-5 flex-col">
+            <h2 className="text-xl">دسته‌بندی‌ها</h2>
+            <button onClick={toggleCategoryForm} className="w-32 h-10 bg-blue-500 rounded-md text-white">
+              دسته‌بندی جدید
+            </button>
+          </div>
+
+          {newCategory && (
+            <div className="transition-all duration-300 ease-in-out opacity-100 scale-100 justify-start py-5 items-center absolute flex flex-col w-80 h-60 text-black bg-white mt-10 rounded-lg shadow-2xl">
+              <h2 className="text-xl mb-8">ساخت دسته‌بندی جدید :)</h2>
+              <form className="flex justify-center items-center flex-col w-full px-5" onSubmit={createCategory}>
+                <input
+                  type="text"
+                  className="w-full border-2 p-2 border-gray-400 h-12 rounded-md"
+                  required
+                  placeholder="چه دسته‌بندی میخوای ؟"
+                  value={nameCategory}
+                  onChange={(event) => setNameCategory(event.target.value)}
+                />
+                <button type="submit" className="w-full bg-blue-500 rounded-md text-white h-12 mt-5">بریم که بسازیمش</button>
+              </form>
             </div>
-          ))
-        ) : (
-          <p className="mx-auto font-gofteh text-xl">دسته‌بندی وجود ندارد</p>
-        )}
+          )}
+        </div>
+
+        <div className="flex justify-start items-center overflow-x-scroll gap-10 p-5 font-gofteh" style={{ scrollbarWidth: "thin" }}>
+          {data.length > 0 ? (
+            data.map((item) => (
+              <div key={item.id} className="flex justify-center items-center flex-col bg-white shadow-lg h-32 min-w-32 rounded-lg">
+                {item.name}
+              </div>
+            ))
+          ) : (
+            <p className="mx-auto font-gofteh text-xl">دسته‌بندی وجود ندارد</p>
+          )}
+        </div>
       </div>
     </div>
   );
