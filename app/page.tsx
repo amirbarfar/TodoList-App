@@ -22,7 +22,7 @@ export default function Page() {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          Provider: "OaMTBh1YMNO4kdlz9SCX6UjIIhpIfF",
+          Provider: "OhMnOezSqVgBaJZuALcyHIRLuojhiN",
           "Authorization": `Bearer ${token}`,
         },
       });

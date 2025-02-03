@@ -22,23 +22,20 @@ export default function Page() {
     setName(storedName);
   }, [router]);
 
-  const [newCategory, setNewCategory] = useState(false);
-  const [nameCategory, setNameCategory] = useState("");
 
+  const [nameCategory, setNameCategory] = useState("");
   const toggleCategoryForm = () => {
     setNewCategory((prev) => !prev);
   };
 
 
-  const logOut = async () => {
-    if (!token) return;
-
+  async function logOut (){
     const response = await fetch("https://todo.zmat24.ir/api/logout", {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        Provider: "OaMTBh1YMNO4kdlz9SCX6UjIIhpIfF",
+        Provider: "OhMnOezSqVgBaJZuALcyHIRLuojhiN",
         Authorization: `Bearer ${token}`
       }
     });
@@ -51,28 +48,37 @@ export default function Page() {
     }
   };
 
-  const createCategory = async (event: React.FormEvent) => {
+  const [newCategory, setNewCategory] = useState(false);
+
+  async function createCategory(event: React.FormEvent) {
     event.preventDefault();
-    if (!token) return;
 
-    const response = await fetch('https://todo.zmat24.ir/api/category/create', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Provider: "OaMTBh1YMNO4kdlz9SCX6UjIIhpIfF",
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({ name: nameCategory })
-    });
-
-    if (response.ok) {
-      setNewCategory(false);
-      getCategory();
+    if (nameCategory === '' && null) {
+      alert('لطفا اول اسم دسته بندی که میخوای رو بنویس!')
     } else {
-      console.error("دیتا وجود ندارد :(");
+      const response = await fetch('https://todo.zmat24.ir/api/category/create', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Provider: "OhMnOezSqVgBaJZuALcyHIRLuojhiN",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ name: nameCategory })
+      });
+
+      console.log(token);
+      
+
+      if (response.ok) {
+        let data = await response.json();
+        console.log(data);
+      } else {
+        console.error("دیتا وجود ندارد :(");
+      }
     }
   };
+
 
   interface Category {
     id: number;
@@ -89,7 +95,7 @@ export default function Page() {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        Provider: "OaMTBh1YMNO4kdlz9SCX6UjIIhpIfF",
+        Provider: "OhMnOezSqVgBaJZuALcyHIRLuojhiN",
         Authorization: `Bearer ${token}`
       }
     });
@@ -112,7 +118,7 @@ export default function Page() {
 
   return (
     <div>
-      <RetroGrid/>
+      <RetroGrid />
       <div className="w-[400px] mx-auto bg-white min-h-screen">
         <div className="flex justify-between p-4 items-start font-gofteh">
           <div>

@@ -28,7 +28,7 @@ function Page() {
       const response = await fetch("https://todo.zmat24.ir/api/login", {
         method: "POST",
         headers: {
-          Provider: "OaMTBh1YMNO4kdlz9SCX6UjIIhpIfF",
+          Provider: "OhMnOezSqVgBaJZuALcyHIRLuojhiN",
           "Content-Type": "application/json",
           Accept: "application/json"
         },
@@ -44,10 +44,9 @@ function Page() {
           alert("لطفا ابتدا ثبت نام کنید :)")
         }
       } else {
-        console.log('خطا در ثبت نام');
+        alert("رمز عبور شما یا ایمیل مطابقت ندارد !")
       }
     } catch (error) {
-      console.error('خطا:', error);
       alert('مشکلی در ثبت نام پیش آمده. لطفا دوباره تلاش کنید.');
     }
   }
