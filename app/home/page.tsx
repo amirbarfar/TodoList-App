@@ -35,7 +35,7 @@ export default function Page() {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        Provider: "OhMnOezSqVgBaJZuALcyHIRLuojhiN",
+        Provider: "nXNFCnarjFY1X3SJy7dxN1UuPDYyIA",
         Authorization: `Bearer ${token}`
       }
     });
@@ -61,7 +61,7 @@ export default function Page() {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          Provider: "OhMnOezSqVgBaJZuALcyHIRLuojhiN",
+          Provider: "nXNFCnarjFY1X3SJy7dxN1UuPDYyIA",
           Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({ name: nameCategory })
@@ -95,11 +95,10 @@ export default function Page() {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        Provider: "OhMnOezSqVgBaJZuALcyHIRLuojhiN",
+        Provider: "nXNFCnarjFY1X3SJy7dxN1UuPDYyIA",
         Authorization: `Bearer ${token}`
       }
     });
-
     if (response.ok) {
       const res = await response.json();
       if (Array.isArray(res.categories)) {
@@ -117,17 +116,17 @@ export default function Page() {
   }, [getCategory]);
 
   const [toggleEventsCat, setToggleEventCat] = useState(false)
-  const [toggleNameCat , setToggleNameCat] = useState('')
+  const [toggleNameCat, setToggleNameCat] = useState('')
 
-  function getOptionEdit(event : React.ChangeEvent<HTMLSelectElement>) {
+  function getOptionEdit(event: React.ChangeEvent<HTMLSelectElement>) {
     setToggleEventCat(true)
     setToggleNameCat(event.target.value)
   }
 
   return (
-    <div className="w-[390px]">
+    <div>
       <RetroGrid />
-      <div className="mx-auto bg-white min-h-screen">
+      <div className="mx-auto w-96">
         <div className="flex justify-around p-1 py-5 items-start font-gofteh">
           <div>
             <h1 className="text-lg">خوش اومدی {name} عزیز !</h1>
@@ -140,10 +139,10 @@ export default function Page() {
           <div className="flex justify-start items-start gap-5 flex-col">
             <h2 className="text-xl px-4">دسته‌بندی‌ها</h2>
             <div className="flex justify-between items-center w-full px-4">
-              <button onClick={toggleCategoryForm} className="w-32 h-10 bg-blue-500 rounded-md text-white">
+              <button onClick={toggleCategoryForm} className="w-32 h-10 bg-blue-500 relative rounded-md text-white">
                 دسته‌بندی جدید
               </button>
-              <select onChange={(event) => getOptionEdit(event)} className="flex justify-center items-center gap-10 font-gofteh w-48 border-2 p-1 rounded-md">
+              <select onChange={(event) => getOptionEdit(event)} className="flex justify-center relative items-center gap-10 font-gofteh w-48 border-2 p-1 rounded-md">
                 {data.length > 0 ? (
                   data.map((item) => (
                     <option key={item.id} className="flex justify-between items-center" value={item.name}>
@@ -154,19 +153,22 @@ export default function Page() {
                   <option className="mx-auto font-gofteh text-xl">دسته‌بندی وجود ندارد</option>
                 )}
               </select>
+              {
+                toggleEventsCat && (
+                  <div className="w-80 h-56 mt-2 shadow-xl absolute top-52 left-10 flex justify-center items-center flex-col bg-white rounded-md">
+                    <div className="flex justify-start items-start w-full px-5 py-2">
+                      <p className="text-2xl">X</p>
+                    </div>
+                    <h2>خب میخوای اصلاح کنی <span className="text-red-600">{toggleNameCat}</span> یا کلا حذفش کنیم ؟</h2>
+                    <div className="flex justify-center items-center flex-col gap-5 w-full p-5">
+                      <button className="w-full h-12 bg-blue-500 rounded-md text-white">اصلاح کردن</button>
+                      <button className="w-full h-12 bg-red-500 rounded-md text-white">حذف کردن</button>
+                    </div>
+                  </div>
+                )}
             </div>
           </div>
 
-          {
-            toggleEventsCat && (
-              <div className="w-80 h-56 mt-2 shadow-xl absolute left-5 flex justify-center items-center flex-col bg-white rounded-md">
-                <h2 className="pt-5">خب میخوای اصلاح کنی <span className="text-red-600">{toggleNameCat}</span> یا کلا حذفش کنیم ؟</h2>
-                <div className="flex justify-center items-center flex-col gap-5 w-full p-5">
-                  <button className="w-full h-12 bg-blue-500 rounded-md text-white">اصلاح کردن</button>
-                  <button className="w-full h-12 bg-red-500 rounded-md text-white">حذف کردن</button>
-                </div>
-              </div>
-          )}
 
           {newCategory && (
             <div className="transition-all duration-300 ease-in-out opacity-100 scale-100 justify-start py-5 items-center absolute flex flex-col w-80 h-60 text-black bg-white mt-10 rounded-lg shadow-2xl">

@@ -29,7 +29,7 @@ function Page() {
             const response = await fetch('https://todo.zmat24.ir/api/register', {
                 method: 'POST',
                 headers: {
-                    Provider: "OhMnOezSqVgBaJZuALcyHIRLuojhiN",
+                    Provider: "nXNFCnarjFY1X3SJy7dxN1UuPDYyIA",
                     'Content-Type': 'application/json',
                     Accept: 'application/json',
                 },
