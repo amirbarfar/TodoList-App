@@ -47,6 +47,8 @@ function Page() {
         alert("رمز عبور شما یا ایمیل مطابقت ندارد !")
       }
     } catch (error) {
+      console.log(error);
+      
       alert('مشکلی در ثبت نام پیش آمده. لطفا دوباره تلاش کنید.');
     }
   }

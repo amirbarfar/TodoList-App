@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useCallback, FormEvent } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { RetroGrid } from "@/components/ui/retro-grid";
 
 export default function Page() {
@@ -71,7 +71,7 @@ export default function Page() {
 
 
       if (response.ok) {
-        let data = await response.json();
+        const data = await response.json();
         console.log(data);
       } else {
         console.error("دیتا وجود ندارد :(");
@@ -119,7 +119,7 @@ export default function Page() {
   const [toggleEventsCat, setToggleEventCat] = useState(false)
   const [toggleNameCat , setToggleNameCat] = useState('')
 
-  function getOptionEdit(event: any) {
+  function getOptionEdit(event : React.ChangeEvent<HTMLSelectElement>) {
     setToggleEventCat(true)
     setToggleNameCat(event.target.value)
   }
