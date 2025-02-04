@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, FormEvent } from "react";
 import { RetroGrid } from "@/components/ui/retro-grid";
 
 export default function Page() {
@@ -29,7 +29,7 @@ export default function Page() {
   };
 
 
-  async function logOut (){
+  async function logOut() {
     const response = await fetch("https://todo.zmat24.ir/api/logout", {
       method: 'POST',
       headers: {
@@ -68,7 +68,7 @@ export default function Page() {
       });
 
       console.log(token);
-      
+
 
       if (response.ok) {
         let data = await response.json();
@@ -116,11 +116,19 @@ export default function Page() {
     getCategory();
   }, [getCategory]);
 
+  const [toggleEventsCat, setToggleEventCat] = useState(false)
+  const [toggleNameCat , setToggleNameCat] = useState('')
+
+  function getOptionEdit(event: any) {
+    setToggleEventCat(true)
+    setToggleNameCat(event.target.value)
+  }
+
   return (
-    <div>
+    <div className="w-[390px]">
       <RetroGrid />
-      <div className="w-[400px] mx-auto bg-white min-h-screen">
-        <div className="flex justify-between p-4 items-start font-gofteh">
+      <div className="mx-auto bg-white min-h-screen">
+        <div className="flex justify-around p-1 py-5 items-start font-gofteh">
           <div>
             <h1 className="text-lg">خوش اومدی {name} عزیز !</h1>
             <p className="text-xs">خب بریم به برنامه امروزمون برسیم :)</p>
@@ -128,13 +136,37 @@ export default function Page() {
           <button onClick={logOut} className="w-32 h-10 bg-red-600 text-sm text-white rounded-lg">خروج از حساب کاربری !</button>
         </div>
 
-        <div className="p-4 font-gofteh">
+        <div className="font-gofteh py-8 px-1">
           <div className="flex justify-start items-start gap-5 flex-col">
-            <h2 className="text-xl">دسته‌بندی‌ها</h2>
-            <button onClick={toggleCategoryForm} className="w-32 h-10 bg-blue-500 rounded-md text-white">
-              دسته‌بندی جدید
-            </button>
+            <h2 className="text-xl px-4">دسته‌بندی‌ها</h2>
+            <div className="flex justify-between items-center w-full px-4">
+              <button onClick={toggleCategoryForm} className="w-32 h-10 bg-blue-500 rounded-md text-white">
+                دسته‌بندی جدید
+              </button>
+              <select onChange={(event) => getOptionEdit(event)} className="flex justify-center items-center gap-10 font-gofteh w-48 border-2 p-1 rounded-md">
+                {data.length > 0 ? (
+                  data.map((item) => (
+                    <option key={item.id} className="flex justify-between items-center" value={item.name}>
+                      {item.name}
+                    </option>
+                  ))
+                ) : (
+                  <option className="mx-auto font-gofteh text-xl">دسته‌بندی وجود ندارد</option>
+                )}
+              </select>
+            </div>
           </div>
+
+          {
+            toggleEventsCat && (
+              <div className="w-80 h-56 mt-2 shadow-xl absolute left-5 flex justify-center items-center flex-col bg-white rounded-md">
+                <h2 className="pt-5">خب میخوای اصلاح کنی <span className="text-red-600">{toggleNameCat}</span> یا کلا حذفش کنیم ؟</h2>
+                <div className="flex justify-center items-center flex-col gap-5 w-full p-5">
+                  <button className="w-full h-12 bg-blue-500 rounded-md text-white">اصلاح کردن</button>
+                  <button className="w-full h-12 bg-red-500 rounded-md text-white">حذف کردن</button>
+                </div>
+              </div>
+          )}
 
           {newCategory && (
             <div className="transition-all duration-300 ease-in-out opacity-100 scale-100 justify-start py-5 items-center absolute flex flex-col w-80 h-60 text-black bg-white mt-10 rounded-lg shadow-2xl">
@@ -151,18 +183,6 @@ export default function Page() {
                 <button type="submit" className="w-full bg-blue-500 rounded-md text-white h-12 mt-5">بریم که بسازیمش</button>
               </form>
             </div>
-          )}
-        </div>
-
-        <div className="flex justify-start items-center overflow-x-scroll gap-10 p-5 font-gofteh" style={{ scrollbarWidth: "thin" }}>
-          {data.length > 0 ? (
-            data.map((item) => (
-              <div key={item.id} className="flex justify-center items-center flex-col bg-white shadow-lg h-32 min-w-32 rounded-lg">
-                {item.name}
-              </div>
-            ))
-          ) : (
-            <p className="mx-auto font-gofteh text-xl">دسته‌بندی وجود ندارد</p>
           )}
         </div>
       </div>
